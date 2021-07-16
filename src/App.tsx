@@ -1,6 +1,12 @@
 import logo from './logo.svg';
 import './App.css';
 
+function prueba(x: number, y: number) {
+  return x + y;
+}
+
+prueba(2, '4');
+
 function App() {
   return (
     <div className="App">
