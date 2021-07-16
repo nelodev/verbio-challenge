@@ -20,7 +20,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint --ignore-path .gitignore .eslintrc",
+    "lint": "eslint --ignore-path .gitignore --ext .js,.ts,.tsx .eslintrc",
     "check-types": "tsc",
     "prettier": "prettier --ignore-path .gitignore \"**/*.+(ts|tsx|jsx|json|css)\"",
     "format": "npm run pretter -- --write",
@@ -47,6 +47,8 @@
   },
   "devDependencies": {
     "@types/react": "^17.0.14",
+    "@typescript-eslint/eslint-plugin": "^4.28.3",
+    "@typescript-eslint/parser": "^4.28.3",
     "eslint": "^7.30.0",
     "eslint-config-prettier": "^8.3.0",
     "prettier": "^2.3.2"
