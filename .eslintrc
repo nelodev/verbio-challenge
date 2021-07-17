@@ -13,7 +13,10 @@
   "env": {
     "browser": true,
     "jest/globals": true,
-    "node": true
+    "node": true,
+  },
+  "globals": {
+    "JSX": "readonly"
   },
   "overrides": [
     {
@@ -21,6 +24,9 @@
       "parser": "@typescript-eslint/parser",
       "parserOptions": {
         "project": "./tsconfig.json"
+      },
+      "rules": {
+        "no-undef": "off"
       },
       "plugins": ["@typescript-eslint/eslint-plugin"]
     }
