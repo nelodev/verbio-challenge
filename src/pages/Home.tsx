@@ -1,4 +1,5 @@
 import {Fragment} from 'react';
+import {Link} from 'react-router-dom';
 
 import CenteredLayout from '../components/ui/CenteredLayout';
 import VerticalLayout from '../components/ui/VerticalLayout';
@@ -19,7 +20,11 @@ function Home(): JSX.Element {
             as="h1"
             text="Welcome to Verbio's Bot"
           />
-          {/* <button onClick={() => history.push('/login')}>Go to login</button> */}
+          <Link className="self-center text-1xl" to="/login">
+            <button className="self-center text-1xl bg-green-300 hover:text-pink-700">
+              Ir al login
+            </button>
+          </Link>
         </Fragment>
       </VerticalLayout>
     </CenteredLayout>
