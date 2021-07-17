@@ -1,9 +1,9 @@
 interface verticalLayoutProps {
-  children: any
+  children: any;
 }
 
-function VerticalLayout({ children }: verticalLayoutProps): JSX.Element {
-  return <div className="flex flex-col">{children}</div>
+function VerticalLayout({children}: verticalLayoutProps): JSX.Element {
+  return <div className="flex flex-col">{children}</div>;
 }
 
 export default VerticalLayout;
