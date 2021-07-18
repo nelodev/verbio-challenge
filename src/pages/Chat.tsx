@@ -34,7 +34,12 @@ function Chat() {
   }, []);
 
   useEffect(() => {
-    console.log('messages', messages);
+    document
+      .getElementsByClassName('overflow-y-auto')[0]
+      .scrollTo(
+        0,
+        document.getElementsByClassName('overflow-y-auto')[0].scrollHeight,
+      );
   }, [messages]);
 
   async function handleSend() {
@@ -43,13 +48,8 @@ function Chat() {
     setMessage('');
     const posted = await postMessage({message, token});
     setMessages([...messages, newMessage]);
+    console.log('posted', posted);
     deferSet(setMessages, messages, [newMessage, ...posted]);
-    document
-      .getElementsByClassName('overflow-y-auto')[0]
-      .scrollTo(
-        0,
-        document.getElementsByClassName('overflow-y-auto')[0].scrollHeight,
-      );
   }
 
   function onLogout() {
