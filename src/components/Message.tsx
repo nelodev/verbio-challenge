@@ -1,4 +1,5 @@
 import Icon from './ui/Icon';
+import botLogo from '../images/bot.png';
 
 interface messageProps {
   message: string;
@@ -7,7 +8,6 @@ interface messageProps {
 }
 
 function Message({message, type, url}: messageProps) {
-  console.log('message', message);
   return (
     <div className="chat-message">
       <div
@@ -16,7 +16,14 @@ function Message({message, type, url}: messageProps) {
         }`}
       >
         <div className="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-2 items-start">
-          <div>
+          <div className="flex">
+            {['text', 'image'].includes(type) ? (
+              <Icon
+                className="self-end mr-1"
+                size="extra-small"
+                src={botLogo}
+              />
+            ) : null}
             <span
               className={`px-4 py-2 rounded-lg inline-block ${
                 ['text', 'image'].includes(type)
@@ -30,6 +37,13 @@ function Message({message, type, url}: messageProps) {
                 <Icon size="medium" src={url} />
               )}
             </span>
+            {type === 'user' ? (
+              <Icon
+                className="self-end ml-1"
+                size="extra-small"
+                src={botLogo}
+              />
+            ) : null}
           </div>
         </div>
       </div>

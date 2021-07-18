@@ -5,6 +5,7 @@ import {getWelcomeMessage, postMessage} from '../utils/api';
 
 import InputChat from '../components/InputChat';
 import Messages from '../components/Messages';
+import botLogo from '../images/bot.png';
 
 function Chat() {
   const [message, setMessage] = useState('');
@@ -37,6 +38,10 @@ function Chat() {
 
   return (
     <div className="flex-1 p:2 sm:p-6 justify-between flex flex-col h-screen">
+      <div className="flex sm:items-center justify-between p-3 border-b-2 border-gray-200">
+        <img src={botLogo} alt="My profile" className="w-6 h-6 rounded-full" />
+        <button className="text-pink-600">Logout</button>
+      </div>
       <Messages messages={messages} />
       <InputChat
         className="h-16"
