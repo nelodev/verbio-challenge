@@ -1,5 +1,6 @@
 import Icon from './ui/Icon';
 import botLogo from '../images/bot.png';
+import userLogo from '../images/foto.jpeg';
 
 interface messageProps {
   message: string;
@@ -39,9 +40,9 @@ function Message({message, type, url}: messageProps) {
             </span>
             {type === 'user' ? (
               <Icon
-                className="self-end ml-1"
+                className="self-end ml-1 rounded-lg"
                 size="extra-small"
-                src={botLogo}
+                src={userLogo}
               />
             ) : null}
           </div>
