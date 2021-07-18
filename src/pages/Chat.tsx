@@ -6,6 +6,7 @@ import {getWelcomeMessage, postMessage} from '../utils/api';
 import InputChat from '../components/InputChat';
 import Messages from '../components/Messages';
 import botLogo from '../images/bot.png';
+import {deferSet} from '../utils/utils';
 
 function Chat() {
   const [message, setMessage] = useState<string>('');
@@ -17,8 +18,7 @@ function Chat() {
     const getFirstMessage = async ({session_id}: any) => {
       const welcomeMessages = await getWelcomeMessage({token: session_id});
       if (welcomeMessages) {
-        const all = [...messages, ...welcomeMessages];
-        setMessages(all);
+        deferSet(setMessages, messages, welcomeMessages);
       } else {
         setRedirect(true);
       }
@@ -33,12 +33,17 @@ function Chat() {
     }
   }, []);
 
+  useEffect(() => {
+    console.log('messages', messages);
+  }, [messages]);
+
   async function handleSend() {
     if (!message) return;
-    setMessage('');
     const newMessage = {type: 'user', text: message};
+    setMessage('');
     const posted = await postMessage({message, token});
-    setMessages([...messages, newMessage, ...posted]);
+    setMessages([...messages, newMessage]);
+    deferSet(setMessages, messages, [newMessage, ...posted]);
     document
       .getElementsByClassName('overflow-y-auto')[0]
       .scrollTo(
