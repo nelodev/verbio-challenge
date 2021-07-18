@@ -1,9 +1,10 @@
 interface inputChatProps {
   value: string;
   setValue: React.Dispatch<React.SetStateAction<string>>;
+  onSend: any;
 }
 
-function InputChat({value, setValue}: inputChatProps) {
+function InputChat({value, setValue, onSend}: inputChatProps) {
   return (
     <div className="border-t-2 border-gray-200 px-4 pt-4 mb-2 sm:mb-0">
       <div className="relative flex">
@@ -17,6 +18,7 @@ function InputChat({value, setValue}: inputChatProps) {
         <div className="absolute right-0 items-center inset-y-0 flex">
           <button
             type="button"
+            onClick={onSend}
             className="inline-flex items-center justify-center rounded-full h-12 w-12 transition duration-500 ease-in-out text-white bg-pink-500 hover:bg-pink-400 focus:outline-none"
           >
             <svg

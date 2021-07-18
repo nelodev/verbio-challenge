@@ -41,7 +41,7 @@ function Login() {
     setNotCompleted(checkCompleted);
     if (Object.keys(checkCompleted).length) return;
 
-    const {success, session_id} = await login('/login', {
+    const {success, session_id} = await login({
       data: {user, password},
       token: '',
     });

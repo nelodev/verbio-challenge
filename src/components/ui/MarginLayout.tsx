@@ -3,7 +3,7 @@ interface marginLayoutProps {
 }
 
 function MarginLayout({children}: marginLayoutProps) {
-  return <div className="mx-4">{children}</div>;
+  return <div className="mx-4 my-4">{children}</div>;
 }
 
 export default MarginLayout;
