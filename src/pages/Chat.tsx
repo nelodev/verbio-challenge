@@ -1,7 +1,10 @@
-import Heading from '../components/typography/Heading';
+import {useState} from 'react';
+
+import InputChat from '../components/InputChat';
 
 function Chat() {
-  return <Heading as="h1" text="Chat" />;
+  const [message, setMessage] = useState('');
+  return <InputChat value={message} setValue={setMessage} />;
 }
 
 export default Chat;
