@@ -48,107 +48,113 @@ beforeEach(() => {
 
 Element.prototype.scrollTo = () => {};
 
-test('Should contain a form with two inputs and a button', () => {
-  window.history.pushState({}, 'Login', '/login');
+describe('Tests of Login page', () => {
+  test('Should contain a form with two inputs and a button', () => {
+    window.history.pushState({}, 'Login', '/login');
 
-  render(
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>,
-  );
+    render(
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>,
+    );
 
-  const loginButton = screen.getByText(/login/i);
+    const loginButton = screen.getByText(/login/i);
 
-  expect(
-    screen.getByPlaceholderText(/insert your username/i),
-  ).toBeInTheDocument();
-  expect(
-    screen.getByPlaceholderText(/insert your password/i),
-  ).toBeInTheDocument();
-  expect(loginButton).toBeInTheDocument();
-});
-
-test('Should show error if data is not valid', async () => {
-  render(
-    <BrowserRouter>
-      <Login />
-    </BrowserRouter>,
-  );
-
-  const usernameInput = screen.getByLabelText(/username/i);
-  const passwordInput = screen.getByLabelText(/password/i);
-  const loginButton = screen.getByText(/login/i);
-
-  userEvent.type(usernameInput, 'wrong-user');
-  userEvent.type(passwordInput, 'wrong-password');
-  userEvent.click(loginButton);
-
-  await waitFor(() =>
-    expect(screen.getByRole('alert')).toHaveTextContent(/wrong/i),
-  );
-});
-
-test('Should navigate to chat page if data is valid', async () => {
-  window.history.pushState({}, 'Login', '/login');
-
-  render(
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>,
-  );
-
-  const loginButton = screen.getByText(/login/i);
-  const usernameInput = screen.getByLabelText(/username/i);
-  const passwordInput = screen.getByLabelText(/password/i);
-
-  userEvent.type(usernameInput, 'admin');
-  userEvent.type(passwordInput, 'admin');
-  userEvent.click(loginButton);
-
-  await waitFor(() => expect(screen.getByText(/logout/i)).toBeInTheDocument());
-
-  expect(window.sessionStorage.setItem).toHaveBeenCalledTimes(1);
-  expect(window.sessionStorage.setItem).toHaveBeenCalledWith(
-    'session_id',
-    fakeSessionId,
-  );
-});
-
-test('Should redirect to chat if user is already logged', async () => {
-  window.history.pushState({}, 'Login', '/login');
-
-  Object.defineProperty(window, 'sessionStorage', {
-    value: {
-      getItem: jest.fn(() => ({session_id: 'kqweqweojqweioqjweio'})),
-      setItem: jest.fn(() => null),
-      removeItem: jest.fn(() => null),
-    },
-    writable: true,
+    expect(
+      screen.getByPlaceholderText(/insert your username/i),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByPlaceholderText(/insert your password/i),
+    ).toBeInTheDocument();
+    expect(loginButton).toBeInTheDocument();
   });
 
-  render(
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>,
-  );
+  test('Should show error if data is not valid', async () => {
+    render(
+      <BrowserRouter>
+        <Login />
+      </BrowserRouter>,
+    );
 
-  await waitFor(() => expect(screen.getByText(/logout/i)).toBeInTheDocument());
-});
+    const usernameInput = screen.getByLabelText(/username/i);
+    const passwordInput = screen.getByLabelText(/password/i);
+    const loginButton = screen.getByText(/login/i);
 
-test('Should show red border if any input is not completed', () => {
-  window.history.pushState({}, 'Login', '/login');
+    userEvent.type(usernameInput, 'wrong-user');
+    userEvent.type(passwordInput, 'wrong-password');
+    userEvent.click(loginButton);
 
-  render(
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>,
-  );
+    await waitFor(() =>
+      expect(screen.getByRole('alert')).toHaveTextContent(/wrong/i),
+    );
+  });
 
-  const loginButton = screen.getByText(/login/i);
-  const usernameInput = screen.getByLabelText(/username/i);
+  test('Should navigate to chat page if data is valid', async () => {
+    window.history.pushState({}, 'Login', '/login');
 
-  userEvent.type(usernameInput, 'admin');
-  userEvent.click(loginButton);
+    render(
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>,
+    );
 
-  expect(screen.getByLabelText(/password/i)).toHaveClass('border-red-500');
+    const loginButton = screen.getByText(/login/i);
+    const usernameInput = screen.getByLabelText(/username/i);
+    const passwordInput = screen.getByLabelText(/password/i);
+
+    userEvent.type(usernameInput, 'admin');
+    userEvent.type(passwordInput, 'admin');
+    userEvent.click(loginButton);
+
+    await waitFor(() =>
+      expect(screen.getByText(/logout/i)).toBeInTheDocument(),
+    );
+
+    expect(window.sessionStorage.setItem).toHaveBeenCalledTimes(1);
+    expect(window.sessionStorage.setItem).toHaveBeenCalledWith(
+      'session_id',
+      fakeSessionId,
+    );
+  });
+
+  test('Should redirect to chat if user is already logged', async () => {
+    window.history.pushState({}, 'Login', '/login');
+
+    Object.defineProperty(window, 'sessionStorage', {
+      value: {
+        getItem: jest.fn(() => ({session_id: 'kqweqweojqweioqjweio'})),
+        setItem: jest.fn(() => null),
+        removeItem: jest.fn(() => null),
+      },
+      writable: true,
+    });
+
+    render(
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>,
+    );
+
+    await waitFor(() =>
+      expect(screen.getByText(/logout/i)).toBeInTheDocument(),
+    );
+  });
+
+  test('Should show red border if any input is not completed', () => {
+    window.history.pushState({}, 'Login', '/login');
+
+    render(
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>,
+    );
+
+    const loginButton = screen.getByText(/login/i);
+    const usernameInput = screen.getByLabelText(/username/i);
+
+    userEvent.type(usernameInput, 'admin');
+    userEvent.click(loginButton);
+
+    expect(screen.getByLabelText(/password/i)).toHaveClass('border-red-500');
+  });
 });
