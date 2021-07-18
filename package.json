@@ -23,7 +23,7 @@
   },
   "scripts": {
     "start": "craco start",
-    "test": "craco test",
+    "test": "craco test --watchAll",
     "eject": "react-scripts eject",
     "prepare": "husky install",
     "lint": "eslint --ignore-path .gitignore --ext .js,.ts,.tsx,.test.tsx .eslintrc",
