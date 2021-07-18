@@ -14,14 +14,20 @@ Bot built for Verbio challenge
   cargo run
 ```
 
-3. Navigate to client folder and execute npm install
+3. Navigate to src folder and execute npm install
 
 ```bash
-  cd ../client
+  cd ../src
   npm install
 ```
 
-4. Open localhost:3000 and start using the bot
+4. Execute the following command to get up and running the frontend side
+
+```bash
+  npm run start
+```
+
+5. Open localhost:3000 and start using the bot
 
 ### Technologies
 
