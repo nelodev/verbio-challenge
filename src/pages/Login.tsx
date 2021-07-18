@@ -70,6 +70,7 @@ function Login() {
           ) : null}
 
           <button
+            disabled={!user && !password}
             type="submit"
             className="text-white w-full py-2 rounded-md self-center text-1xl bg-pink-700 hover:bg-pink-800"
           >

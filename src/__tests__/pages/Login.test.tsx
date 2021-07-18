@@ -1,9 +1,49 @@
-import {render, screen} from '@testing-library/react';
+import {render, screen, waitFor} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-// import userEvent from '@testing-library/user-event';
 import {BrowserRouter} from 'react-router-dom';
+import {rest} from 'msw';
+import {setupServer} from 'msw/node';
+import {API_URL} from '../../utils/constants';
 import App from '../../App';
 import Login from '../../pages/Login';
+
+const fakeSessionId = 'qoirqjoirjoehuhiquwehqyuigtryqwetryuwet';
+
+const server = setupServer(
+  rest.post(`http://${API_URL}/login`, (req: any, res, ctx) => {
+    const user = req.body?.user;
+    if (user !== 'admin') {
+      return res(
+        ctx.json({
+          success: false,
+        }),
+      );
+    } else {
+      return res(
+        ctx.json({
+          success: true,
+          session_id: fakeSessionId,
+        }),
+      );
+    }
+  }),
+);
+
+beforeAll(() => {
+  server.listen({onUnhandledRequest: 'error'});
+  jest.spyOn(console, 'error').mockImplementation(() => {});
+});
+afterAll(() => server.close());
+afterEach(() => server.resetHandlers());
+beforeEach(() => {
+  Object.defineProperty(window, 'sessionStorage', {
+    value: {
+      getItem: jest.fn(() => null),
+      setItem: jest.fn(() => null),
+    },
+    writable: true,
+  });
+});
 
 test('Should contain a form with two inputs and a button', () => {
   window.history.pushState({}, 'Login', '/login');
@@ -25,8 +65,39 @@ test('Should contain a form with two inputs and a button', () => {
   expect(loginButton).toBeInTheDocument();
 });
 
-test('Should submit form with typed data when button is clicked', () => {
-  const {debug} = render(
+test('Button should be disabled if form is not completed', () => {
+  window.history.pushState({}, 'Login', '/login');
+
+  render(
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>,
+  );
+
+  expect(screen.getByText(/login/i)).toBeDisabled();
+});
+
+test('Button should be enabled if form is completed', () => {
+  window.history.pushState({}, 'Login', '/login');
+
+  render(
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>,
+  );
+
+  const usernameInput = screen.getByLabelText(/username/i);
+  const passwordInput = screen.getByLabelText(/password/i);
+  const loginButton = screen.getByText(/login/i);
+
+  userEvent.type(usernameInput, 'wrong-user');
+  userEvent.type(passwordInput, 'wrong-password');
+
+  expect(loginButton).toBeEnabled();
+});
+
+test('Should show error if data is not valid', async () => {
+  render(
     <BrowserRouter>
       <Login />
     </BrowserRouter>,
@@ -40,7 +111,35 @@ test('Should submit form with typed data when button is clicked', () => {
   userEvent.type(passwordInput, 'wrong-password');
   userEvent.click(loginButton);
 
-  debug();
+  await waitFor(() =>
+    expect(screen.getByRole('alert')).toHaveTextContent(/wrong/i),
+  );
+});
 
-  expect(screen.getByRole('alert')).toHaveTextContent(/oops/i);
+test('Should navigate to chat page if data is valid', async () => {
+  window.history.pushState({}, 'Login', '/login');
+
+  render(
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>,
+  );
+
+  const loginButton = screen.getByText(/login/i);
+  const usernameInput = screen.getByLabelText(/username/i);
+  const passwordInput = screen.getByLabelText(/password/i);
+
+  userEvent.type(usernameInput, 'admin');
+  userEvent.type(passwordInput, 'admin');
+  userEvent.click(loginButton);
+
+  await waitFor(() =>
+    expect(screen.getByRole('heading')).toHaveTextContent(/chat/i),
+  );
+
+  expect(window.sessionStorage.setItem).toHaveBeenCalledTimes(1);
+  expect(window.sessionStorage.setItem).toHaveBeenCalledWith(
+    'session_id',
+    fakeSessionId,
+  );
 });
