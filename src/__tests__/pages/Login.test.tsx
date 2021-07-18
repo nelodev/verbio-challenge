@@ -143,3 +143,32 @@ test('Should navigate to chat page if data is valid', async () => {
     fakeSessionId,
   );
 });
+
+test('Should redirect to chat if user is already logged', async () => {
+  window.history.pushState({}, 'Login', '/login');
+
+  render(
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>,
+  );
+
+  const loginButton = screen.getByText(/login/i);
+  const usernameInput = screen.getByLabelText(/username/i);
+  const passwordInput = screen.getByLabelText(/password/i);
+
+  userEvent.type(usernameInput, 'admin');
+  userEvent.type(passwordInput, 'admin');
+  userEvent.click(loginButton);
+
+  await waitFor(() =>
+    expect(screen.getByRole('heading')).toHaveTextContent(/chat/i),
+  );
+
+  window.history.pushState({}, 'Home', '/');
+  userEvent.click(loginButton);
+
+  await waitFor(() =>
+    expect(screen.getByRole('heading')).toHaveTextContent(/chat/i),
+  );
+});

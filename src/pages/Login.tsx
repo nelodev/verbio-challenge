@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import {Link, Redirect} from 'react-router-dom';
 
 import {login} from '../utils/api';
@@ -13,7 +13,13 @@ function Login() {
   const [user, setUser] = useState('');
   const [password, setPassword] = useState('');
   const [isError, setIsError] = useState(false);
-  const [redirect, setRedirect] = useState(false);
+  const [redirectToChat, setRedirectToChat] = useState(false);
+
+  useEffect(() => {
+    if (window.sessionStorage.getItem('session_id')) {
+      // setRedirectToChat(true);
+    }
+  }, []);
 
   async function handleSubmit(e: any): Promise<void> {
     e.preventDefault();
@@ -24,13 +30,13 @@ function Login() {
 
     if (success) {
       sessionStorage.setItem('session_id', session_id);
-      setRedirect(true);
+      setRedirectToChat(true);
     } else {
       setIsError(true);
     }
   }
 
-  if (redirect) {
+  if (redirectToChat) {
     return <Redirect to="/chat" />;
   }
 
@@ -72,7 +78,7 @@ function Login() {
           <button
             disabled={!user && !password}
             type="submit"
-            className="text-white w-full py-2 rounded-md self-center text-1xl bg-pink-700 hover:bg-pink-800"
+            className="text-white w-full py-2 rounded-md self-center text-1xl bg-pink-700 hover:bg-pink-800 disabled:bg-pink-400"
           >
             Go to login
           </button>
