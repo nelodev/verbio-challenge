@@ -65,37 +65,6 @@ test('Should contain a form with two inputs and a button', () => {
   expect(loginButton).toBeInTheDocument();
 });
 
-test('Button should be disabled if form is not completed', () => {
-  window.history.pushState({}, 'Login', '/login');
-
-  render(
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>,
-  );
-
-  expect(screen.getByText(/login/i)).toBeDisabled();
-});
-
-test('Button should be enabled if form is completed', () => {
-  window.history.pushState({}, 'Login', '/login');
-
-  render(
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>,
-  );
-
-  const usernameInput = screen.getByLabelText(/username/i);
-  const passwordInput = screen.getByLabelText(/password/i);
-  const loginButton = screen.getByText(/login/i);
-
-  userEvent.type(usernameInput, 'wrong-user');
-  userEvent.type(passwordInput, 'wrong-password');
-
-  expect(loginButton).toBeEnabled();
-});
-
 test('Should show error if data is not valid', async () => {
   render(
     <BrowserRouter>
@@ -171,4 +140,22 @@ test('Should redirect to chat if user is already logged', async () => {
   await waitFor(() =>
     expect(screen.getByRole('heading')).toHaveTextContent(/chat/i),
   );
+});
+
+test('Should show red border if any input is not completed', () => {
+  window.history.pushState({}, 'Login', '/login');
+
+  render(
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>,
+  );
+
+  const loginButton = screen.getByText(/login/i);
+  const usernameInput = screen.getByLabelText(/username/i);
+
+  userEvent.type(usernameInput, 'admin');
+  userEvent.click(loginButton);
+
+  expect(screen.getByLabelText(/password/i)).toHaveClass('border-red-500');
 });

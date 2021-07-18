@@ -13,16 +13,34 @@ function Login() {
   const [user, setUser] = useState('');
   const [password, setPassword] = useState('');
   const [isError, setIsError] = useState(false);
+  const [notCompleted, setNotCompleted] = useState({
+    user: false,
+    password: false,
+  });
   const [redirectToChat, setRedirectToChat] = useState(false);
 
   useEffect(() => {
     if (window.sessionStorage.getItem('session_id')) {
-      // setRedirectToChat(true);
+      setRedirectToChat(true);
     }
   }, []);
 
   async function handleSubmit(e: any): Promise<void> {
     e.preventDefault();
+    setIsError(false);
+
+    let checkCompleted: any = {};
+    if (!user) {
+      checkCompleted.user = true;
+    }
+
+    if (!password) {
+      checkCompleted.password = true;
+    }
+
+    setNotCompleted(checkCompleted);
+    if (Object.keys(checkCompleted).length) return;
+
     const {success, session_id} = await login('/login', {
       data: {user, password},
       token: '',
@@ -45,7 +63,7 @@ function Login() {
       <Link to="/">
         <Icon src={botLogo} size="big" />
       </Link>
-      <form onSubmit={handleSubmit} className="w-full">
+      <form onSubmit={handleSubmit} className="w-full sm:w-2/4 lg:w-1/4">
         <VerticalLayout className="space-y-4">
           <FormInput
             id="username-input"
@@ -55,6 +73,7 @@ function Login() {
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setUser(e.target.value)
             }
+            errorIf={notCompleted.user}
             value={user}
           />
 
@@ -66,6 +85,7 @@ function Login() {
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setPassword(e.target.value)
             }
+            errorIf={notCompleted.password}
             value={password}
           />
 
@@ -76,11 +96,10 @@ function Login() {
           ) : null}
 
           <button
-            disabled={!user && !password}
             type="submit"
-            className="text-white w-full py-2 rounded-md self-center text-1xl bg-pink-700 hover:bg-pink-800 disabled:bg-pink-400"
+            className="text-white w-full py-2 rounded-md self-center text-1xl bg-pink-700 hover:bg-pink-800"
           >
-            Go to login
+            Login
           </button>
         </VerticalLayout>
       </form>
