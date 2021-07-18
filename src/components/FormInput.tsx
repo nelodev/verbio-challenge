@@ -2,14 +2,22 @@ interface formInputProps {
   id: string;
   name: string;
   placeholder: string;
+  text: string;
   value: string;
   onChange: any;
 }
 
-function FormInput({id, name, placeholder, value, onChange}: formInputProps) {
+function FormInput({
+  id,
+  name,
+  placeholder,
+  text,
+  value,
+  onChange,
+}: formInputProps) {
   return (
     <div className="flex flex-col">
-      <label htmlFor="username-input">Username</label>
+      <label htmlFor={id}>{text}</label>
       <input
         id={id}
         name={name}

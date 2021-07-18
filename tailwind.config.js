@@ -5,8 +5,10 @@ module.exports = {
     extend: {},
   },
   variants: {
+    backgroundColor: ({after}) => after(['disabled']),
     extend: {
       transform: ['hover', 'focus'],
+      opacity: ['disabled'],
     },
   },
   plugins: [],
