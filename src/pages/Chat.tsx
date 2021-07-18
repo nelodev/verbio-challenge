@@ -8,7 +8,7 @@ import Messages from '../components/Messages';
 import botLogo from '../images/bot.png';
 
 function Chat() {
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState<string>('');
   const [messages, setMessages] = useState<any[]>([]);
   const [token, setToken] = useState<string>('');
   const [redirect, setRedirect] = useState<Boolean>(false);
@@ -16,13 +16,17 @@ function Chat() {
   useEffect(() => {
     const getFirstMessage = async ({session_id}: any) => {
       const welcomeMessages = await getWelcomeMessage({token: session_id});
-      const all = [...messages, ...welcomeMessages];
-      setMessages(all);
+      if (welcomeMessages) {
+        const all = [...messages, ...welcomeMessages];
+        setMessages(all);
+      } else {
+        setRedirect(true);
+      }
     };
 
     const session_id = window.sessionStorage.getItem('session_id');
     if (!session_id) {
-      <Redirect to="/login" />;
+      setRedirect(true);
     } else {
       setToken(session_id);
       getFirstMessage({session_id});
@@ -49,6 +53,7 @@ function Chat() {
   }
 
   if (redirect) {
+    window.sessionStorage.removeItem('session_id');
     return <Redirect to="/" />;
   }
 
