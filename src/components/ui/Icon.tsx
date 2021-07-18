@@ -1,5 +1,5 @@
 interface iconProps {
-  src: string;
+  src?: string;
   className?: string;
   size?: string;
 }

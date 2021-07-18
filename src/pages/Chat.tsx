@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react';
 import {Redirect} from 'react-router-dom';
 
-import {getWelcomeMessage} from '../utils/api';
+import {getWelcomeMessage, postMessage} from '../utils/api';
 
 import InputChat from '../components/InputChat';
 import Messages from '../components/Messages';
@@ -9,6 +9,7 @@ import Messages from '../components/Messages';
 function Chat() {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState<any[]>([]);
+  const [token, setToken] = useState<string>('');
 
   useEffect(() => {
     const getFirstMessage = async ({session_id}: any) => {
@@ -21,15 +22,17 @@ function Chat() {
     if (!session_id) {
       <Redirect to="/login" />;
     } else {
+      setToken(session_id);
       getFirstMessage({session_id});
     }
   }, []);
 
-  function handleSend() {
+  async function handleSend() {
     if (!message) return;
     setMessage('');
     const newMessage = {type: 'user', text: message};
-    setMessages([...messages, newMessage]);
+    const posted = await postMessage({message, token});
+    setMessages([...messages, newMessage, ...posted]);
   }
 
   return (

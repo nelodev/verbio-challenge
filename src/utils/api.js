@@ -9,8 +9,8 @@ function login({data, token}) {
       {...data},
       {
         headers: {
-          'content-type': data ? 'application/json' : undefined,
-          authorization: token ? `Bearer ${token}` : undefined,
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
       },
     )
@@ -28,7 +28,25 @@ function getWelcomeMessage({token}) {
       },
     })
     .then(({data}) => data.response)
-    .catch(error => console.log('error', error));
+    .catch(() => null);
 }
 
-export {login, getWelcomeMessage};
+function postMessage({message, token}) {
+  return axios
+    .post(
+      `http://${API_URL}/sendMessage`,
+      {
+        text: message,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      },
+    )
+    .then(({data}) => data.response)
+    .catch(() => null);
+}
+
+export {login, getWelcomeMessage, postMessage};
