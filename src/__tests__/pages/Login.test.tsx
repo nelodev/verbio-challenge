@@ -40,10 +40,13 @@ beforeEach(() => {
     value: {
       getItem: jest.fn(() => null),
       setItem: jest.fn(() => null),
+      removeItem: jest.fn(() => null),
     },
     writable: true,
   });
 });
+
+Element.prototype.scrollTo = () => {};
 
 test('Should contain a form with two inputs and a button', () => {
   window.history.pushState({}, 'Login', '/login');
@@ -102,9 +105,7 @@ test('Should navigate to chat page if data is valid', async () => {
   userEvent.type(passwordInput, 'admin');
   userEvent.click(loginButton);
 
-  await waitFor(() =>
-    expect(screen.getByRole('heading')).toHaveTextContent(/chat/i),
-  );
+  await waitFor(() => expect(screen.getByText(/logout/i)).toBeInTheDocument());
 
   expect(window.sessionStorage.setItem).toHaveBeenCalledTimes(1);
   expect(window.sessionStorage.setItem).toHaveBeenCalledWith(
@@ -116,30 +117,22 @@ test('Should navigate to chat page if data is valid', async () => {
 test('Should redirect to chat if user is already logged', async () => {
   window.history.pushState({}, 'Login', '/login');
 
+  Object.defineProperty(window, 'sessionStorage', {
+    value: {
+      getItem: jest.fn(() => ({session_id: 'kqweqweojqweioqjweio'})),
+      setItem: jest.fn(() => null),
+      removeItem: jest.fn(() => null),
+    },
+    writable: true,
+  });
+
   render(
     <BrowserRouter>
       <App />
     </BrowserRouter>,
   );
 
-  const loginButton = screen.getByText(/login/i);
-  const usernameInput = screen.getByLabelText(/username/i);
-  const passwordInput = screen.getByLabelText(/password/i);
-
-  userEvent.type(usernameInput, 'admin');
-  userEvent.type(passwordInput, 'admin');
-  userEvent.click(loginButton);
-
-  await waitFor(() =>
-    expect(screen.getByRole('heading')).toHaveTextContent(/chat/i),
-  );
-
-  window.history.pushState({}, 'Home', '/');
-  userEvent.click(loginButton);
-
-  await waitFor(() =>
-    expect(screen.getByRole('heading')).toHaveTextContent(/chat/i),
-  );
+  await waitFor(() => expect(screen.getByText(/logout/i)).toBeInTheDocument());
 });
 
 test('Should show red border if any input is not completed', () => {
