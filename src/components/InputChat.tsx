@@ -6,6 +6,10 @@ interface inputChatProps {
 }
 
 function InputChat({value, setValue, onSend, className}: inputChatProps) {
+  function handleKeyDown(key: string) {
+    if (key === 'Enter') onSend();
+  }
+
   return (
     <div
       className={`border-t-2 border-gray-200 px-4 pt-4 mb-2 sm:mb-0 ${className}`}
@@ -15,6 +19,7 @@ function InputChat({value, setValue, onSend, className}: inputChatProps) {
           type="text"
           placeholder="Write something..."
           onChange={e => setValue(e.target.value)}
+          onKeyDown={e => handleKeyDown(e.key)}
           value={value}
           className="w-full focus:outline-none focus:placeholder-gray-400 text-gray-600 placeholder-gray-600 pl-6 bg-gray-200 rounded-full py-3"
         />
