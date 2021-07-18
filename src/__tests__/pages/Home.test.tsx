@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {BrowserRouter} from 'react-router-dom';
 import {render, screen} from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import App from '../../App';
 
 test('should navigate to login page when click go to login button', () => {
@@ -14,8 +13,4 @@ test('should navigate to login page when click go to login button', () => {
   );
 
   expect(screen.getByRole('heading')).toHaveTextContent(/welcome/i);
-  userEvent.click(screen.getByText(/login/i));
-  expect(
-    screen.getByPlaceholderText(/insert your username/i),
-  ).toBeInTheDocument();
 });
