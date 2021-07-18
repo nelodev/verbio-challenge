@@ -11,10 +11,7 @@ function Home(): JSX.Element {
     <CenteredLayout>
       <VerticalLayout>
         <Fragment>
-          <Icon
-            // className="self-center"
-            src="https://media-exp1.licdn.com/dms/image/C560BAQG603N76hP7Uw/company-logo_200_200/0/1554832529017?e=2159024400&v=beta&t=Va2t2oVq5OUIVBiKiesXlwVQQInRJ54Z-zC68SZgNus"
-          />
+          <Icon src="https://media-exp1.licdn.com/dms/image/C560BAQG603N76hP7Uw/company-logo_200_200/0/1554832529017?e=2159024400&v=beta&t=Va2t2oVq5OUIVBiKiesXlwVQQInRJ54Z-zC68SZgNus" />
           <Heading
             className="text-5xl mt-4"
             as="h1"

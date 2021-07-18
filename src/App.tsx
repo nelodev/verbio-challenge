@@ -1,8 +1,7 @@
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
 import './index.css';
-import {Home} from './pages/index';
-import Heading from './components/typography/Heading';
+import {Home, Login} from './pages/index';
 import MarginLayout from './components/ui/MarginLayout';
 
 function App() {
@@ -14,7 +13,7 @@ function App() {
             <Home />
           </Route>
           <Route exact path="/login">
-            <Heading text="Login" as="h1" />
+            <Login />
           </Route>
           <Route exact path="/chat">
             Chat

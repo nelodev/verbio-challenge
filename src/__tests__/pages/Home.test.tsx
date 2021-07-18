@@ -15,5 +15,7 @@ test('should navigate to login page when click go to login button', () => {
 
   expect(screen.getByRole('heading')).toHaveTextContent(/welcome/i);
   userEvent.click(screen.getByText(/login/i));
-  expect(screen.getByRole('heading')).toHaveTextContent(/login/i);
+  expect(
+    screen.getByPlaceholderText(/insert your username/i),
+  ).toBeInTheDocument();
 });
