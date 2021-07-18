@@ -48,7 +48,6 @@ function Chat() {
     setMessage('');
     const posted = await postMessage({message, token});
     setMessages([...messages, newMessage]);
-    console.log('posted', posted);
     deferSet(setMessages, messages, [newMessage, ...posted]);
   }
 

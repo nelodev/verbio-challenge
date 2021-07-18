@@ -27,6 +27,7 @@ function InputChat({value, setValue, onSend, className}: inputChatProps) {
           <button
             type="button"
             onClick={onSend}
+            data-testid="button-submit"
             className="inline-flex items-center justify-center rounded-full h-12 w-12 transition duration-500 ease-in-out text-white bg-pink-500 hover:bg-pink-400 focus:outline-none"
           >
             <svg
