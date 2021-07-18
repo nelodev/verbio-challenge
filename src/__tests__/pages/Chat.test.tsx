@@ -12,5 +12,5 @@ test('Should have an input with a placeholder text', () => {
     </BrowserRouter>,
   );
 
-  expect(screen.getByPlaceholderText(/message/)).toBeInTheDocument();
+  expect(screen.getByPlaceholderText(/something/)).toBeInTheDocument();
 });
