@@ -29,6 +29,17 @@ Bot built for Verbio challenge
 
 5. Open localhost:3000 and start using the bot
 
+### Things to keep in mind
+
+- API Base endpoint can be easily configurable thanks to the API_URL variable inside utils/constants file
+- API methods defined in utils/api file and exported to can be easily accesible through all the app
+- Created deferSet in utils/utils file to defer set of any variables (used in simulating defer of bot responses)
+- Used userEvent & screen in tests to approach tests from user's perspective
+
+### Git hooks
+
+- Pre-commit: Hook that lints, validates and formats all the code before commiting the code
+
 ### Technologies
 
 - React 17 (+ react-router-dom) bootstraped with CRA
