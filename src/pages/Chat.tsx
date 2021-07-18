@@ -1,4 +1,4 @@
-import {Fragment, useState, useEffect} from 'react';
+import {useState, useEffect} from 'react';
 import {Redirect} from 'react-router-dom';
 
 import {getWelcomeMessage} from '../utils/api';
@@ -33,11 +33,15 @@ function Chat() {
   }
 
   return (
-    <Fragment>
+    <div className="flex-1 p:2 sm:p-6 justify-between flex flex-col h-screen">
       <Messages messages={messages} />
-      <InputChat value={message} setValue={setMessage} onSend={handleSend} />
-      <button>Logout</button>
-    </Fragment>
+      <InputChat
+        className="h-16"
+        value={message}
+        setValue={setMessage}
+        onSend={handleSend}
+      />
+    </div>
   );
 }
 

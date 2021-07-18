@@ -2,11 +2,14 @@ interface inputChatProps {
   value: string;
   setValue: React.Dispatch<React.SetStateAction<string>>;
   onSend: any;
+  className: string;
 }
 
-function InputChat({value, setValue, onSend}: inputChatProps) {
+function InputChat({value, setValue, onSend, className}: inputChatProps) {
   return (
-    <div className="border-t-2 border-gray-200 px-4 pt-4 mb-2 sm:mb-0">
+    <div
+      className={`border-t-2 border-gray-200 px-4 pt-4 mb-2 sm:mb-0 ${className}`}
+    >
       <div className="relative flex">
         <input
           type="text"
