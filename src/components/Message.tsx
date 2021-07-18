@@ -26,7 +26,7 @@ function Message({message, type, url}: messageProps) {
               />
             ) : null}
             <span
-              className={`px-4 py-2 rounded-lg inline-block ${
+              className={`px-4 py-2 rounded-lg inline-block lg:text-2xl ${
                 !['text', 'image'].includes(type)
                   ? 'bg-gray-300 text-gray-600 rounded-bl-none'
                   : 'bg-pink-300 text-black rounded-br-none'

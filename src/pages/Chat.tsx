@@ -35,6 +35,12 @@ function Chat() {
     const newMessage = {type: 'user', text: message};
     const posted = await postMessage({message, token});
     setMessages([...messages, newMessage, ...posted]);
+    document
+      .getElementsByClassName('overflow-y-auto')[0]
+      .scrollTo(
+        0,
+        document.getElementsByClassName('overflow-y-auto')[0].scrollHeight,
+      );
   }
 
   function onLogout() {
